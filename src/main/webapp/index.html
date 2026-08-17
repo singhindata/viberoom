@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>VibeRoom</title>
+
+<link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+	<!-- Top Bar -->
+	<header class="topbar">
+
+		<div class="logo">VibeRoom</div>
+
+		<div class="topbar-actions">
+			<button class="listen-together">👥 Listen Together</button>
+		</div>
+
+	</header>
+
+
+	<!-- Application -->
+	<div class="app-layout">
+
+
+		<!-- Sidebar -->
+		<aside class="sidebar">
+
+			<nav class="sidebar-nav">
+
+				<button class="nav-item active" id="homeButton">
+					🏠 <span>Home</span>
+				</button>
+
+				<button class="nav-item" id="searchNavButton">
+					🔍 <span>Search</span>
+				</button>
+
+				<button class="nav-item" id="libraryButton">
+					🎵 <span>Library</span>
+				</button>
+
+				<button class="nav-item" id="favoritesButton">
+					❤️ <span>Favorites</span>
+				</button>
+
+			</nav>
+
+		</aside>
+
+
+		<!-- Main Content -->
+		<main class="main-content">
+
+			<section class="home-section">
+
+				<h1>Good vibes.</h1>
+
+				<p class="subtitle">Listen to your music.</p>
+
+
+				<!-- Search -->
+				<div class="search-container">
+
+					<input type="text" id="searchInput"
+						placeholder="Search songs, artists...">
+
+					<button id="searchButton">🔍</button>
+
+				</div>
+
+
+				<!-- Current Song -->
+				<section class="player">
+
+					<div class="album-cover">
+						<span>🎵</span>
+					</div>
+
+					<h2 id="songTitle">No song selected</h2>
+
+					<p id="artistName">Search for a song to start listening</p>
+
+				</section>
+
+			</section>
+
+
+			<!-- Library -->
+			<section class="library">
+
+				<h2>Your Library</h2>
+
+				<div id="songList">
+
+					<p class="empty-message">Your songs will appear here.</p>
+
+				</div>
+
+			</section>
+
+		</main>
+
+	</div>
+
+
+	<!-- Bottom Player -->
+	<footer class="bottom-player">
+
+
+		<!-- Song Info -->
+		<div class="bottom-song">
+
+			<div class="mini-cover">🎵</div>
+
+			<div>
+
+				<div id="bottomSongTitle">No song selected</div>
+
+				<div id="bottomArtistName">—</div>
+
+			</div>
+
+		</div>
+
+
+		<!-- Playback -->
+		<div class="playback">
+
+
+			<div class="playback-controls">
+
+				<button id="previousButton">⏮</button>
+
+				<button id="playButton" class="play-button">▶</button>
+
+				<button id="nextButton">⏭</button>
+
+			</div>
+
+
+			<div class="progress-container">
+
+				<span id="currentTime"> 00:00 </span> <input type="range"
+					id="progressBar" min="0" max="100" value="0">
+
+				<span id="duration"> 00:00 </span>
+
+			</div>
+
+		</div>
+
+
+		<!-- Volume -->
+		<div class="volume-container">
+
+			<span>🔊</span> <input type="range" id="volumeBar" min="0" max="1"
+				step="0.01" value="1">
+
+		</div>
+
+	</footer>
+
+
+	<!-- Audio -->
+	<audio id="audioPlayer"></audio>
+
+
+	<script src="JS/app.js"></script>
+
+</body>
+
+</html>
