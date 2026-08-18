@@ -1,7 +1,6 @@
 package com.saurav.viberoom.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saurav.viberoom.dao.SongDAO;
 import com.saurav.viberoom.model.Song;
 
@@ -20,9 +20,14 @@ public class SongServlet extends HttpServlet {
 
     private SongDAO songDAO;
 
+    private ObjectMapper objectMapper;
+
     @Override
     public void init() throws ServletException {
+
         songDAO = new SongDAO();
+
+        objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -36,26 +41,9 @@ public class SongServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        PrintWriter out = response.getWriter();
-
-        out.println("[");
-
-        for (int i = 0; i < songs.size(); i++) {
-
-            Song song = songs.get(i);
-
-            out.print("{");
-            out.print("\"id\":" + song.getId() + ",");
-            out.print("\"title\":\"" + song.getTitle() + "\",");
-            out.print("\"artist\":\"" + song.getArtist() + "\",");
-            out.print("\"filePath\":\"" + song.getFilePath() + "\"");
-            out.print("}");
-
-            if (i < songs.size() - 1) {
-                out.println(",");
-            }
-        }
-
-        out.println("]");
+        objectMapper.writeValue(
+                response.getWriter(),
+                songs
+        );
     }
 }

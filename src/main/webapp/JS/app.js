@@ -27,8 +27,7 @@ const searchButton = document.getElementById("searchButton");
    STATE
 ================================ */
 
-let favorites =
-    JSON.parse(localStorage.getItem("favorites")) || [];
+let favorites = [];
 
 let songs = [];
 
@@ -262,6 +261,35 @@ audioPlayer.addEventListener("ended", function() {
 
 });
 
+async function fetchFavorites() {
+
+    try {
+
+        const response =
+            await fetch("/viberoom/favorites");
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch favorites");
+        }
+
+        const favoriteData =
+            await response.json();
+
+        favorites = favoriteData.map(function(favorite) {
+            return favorite.songId;
+        });
+
+        console.log("Favorites loaded:", favorites);
+
+    } catch (error) {
+
+        console.error(
+            "Error loading favorites:",
+            error
+        );
+    }
+}
+
 
 /* ================================
    RENDER SONGS
@@ -334,31 +362,61 @@ function renderSongs(songArray = songs) {
             );
 
 
-			favoriteButton.addEventListener("click", function(event) {
+			favoriteButton.addEventListener("click", async function(event) {
 
 			    event.stopPropagation();
 
-			    if (favorites.includes(song.id)) {
+			    const isFavorite =
+			        favorites.includes(song.id);
 
-			        favorites = favorites.filter(function(favoriteId) {
-			            return favoriteId !== song.id;
-			        });
+			    try {
 
-			    } else {
+			        if (isFavorite) {
 
-			        favorites.push(song.id);
-			    }
+			            const response = await fetch(
+			                "/viberoom/favorites?songId=" + song.id,
+			                {
+			                    method: "DELETE"
+			                }
+			            );
 
-			    localStorage.setItem(
-			        "favorites",
-			        JSON.stringify(favorites)
-			    );
+			            if (!response.ok) {
+			                throw new Error("Failed to remove favorite");
+			            }
 
-			    // Re-render the current view
-			    if (currentView === "favorites") {
-			        showFavorites();
-			    } else {
-			        renderSongs();
+			            favorites = favorites.filter(function(favoriteId) {
+			                return favoriteId !== song.id;
+			            });
+
+			        } else {
+
+			            const response = await fetch(
+			                "/viberoom/favorites?songId=" + song.id,
+			                {
+			                    method: "POST"
+			                }
+			            );
+
+			            if (!response.ok) {
+			                throw new Error("Failed to add favorite");
+			            }
+
+			            favorites.push(song.id);
+			        }
+
+			        // Immediately update the UI
+			        if (currentView === "favorites") {
+			            showFavorites();
+			        } else {
+			            renderSongs();
+			        }
+
+			    } catch (error) {
+
+			        console.error(
+			            "Favorite error:",
+			            error
+			        );
 			    }
 
 			});
@@ -652,4 +710,12 @@ async function fetchSongs() {
    START APPLICATION
 ================================ */
 
-fetchSongs();
+async function initializeApp() {
+
+    await fetchFavorites();
+
+    await fetchSongs();
+
+}
+
+initializeApp();

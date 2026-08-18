@@ -14,6 +14,7 @@
         </provider>
 
         <class>com.saurav.viberoom.model.Song</class>
+        <class>com.saurav.viberoom.model.Favorite</class>
 
         <properties>
 
