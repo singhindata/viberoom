@@ -29,7 +29,7 @@
                       value="root"/>
 
             <property name="jakarta.persistence.jdbc.password"
-                      value="saurav"/>
+                      value="${password}"/>
 
 
             <!-- Hibernate -->
